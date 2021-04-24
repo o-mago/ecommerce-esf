@@ -4,7 +4,9 @@ export default {
   router: {
     base: '/ecommerce-esf/'
   },
-
+  generate: {
+    fallback: 'index.html'
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'ecommerce-esf',

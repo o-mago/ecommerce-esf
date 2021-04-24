@@ -70,7 +70,7 @@
       fixed
     >
       <v-card
-        class="flex"
+        class="flex w-max"
         flat
         tile
       >
@@ -109,7 +109,7 @@ export default {
     document.head.appendChild(externalScript);
   },
   async created() {
-    this.planId = parseInt(this.$route.params.slug)
+    this.planId = parseInt(this.$route?.query?.plan)
     if(this.planId) {
       this.client = await pagarme.client.connect({
         api_key: process.env.apiKey,

@@ -1,16 +1,16 @@
 <template>
   <div>
   <div class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500">
-    <div v-if="!loading">
+    <div v-show="!loading">
 
-      <div v-if="!status || status !== 'ok'">
+      <div v-show="!status || status !== 'ok'">
         <v-card class="py-5 px-5" min-width="500" elevation="2">
           <v-img
             contain
             aspect-ratio="2"
             :src="require('@/assets/images/logo-esf.png')"
           ></v-img>
-          <div v-if="planId">
+          <div v-show="planId">
             <div class="my-10">
               <h1 class="font-sans">Doação mensal no valor de</h1>
               <h1 class="font-sans text-green-600"> R$ {{getFormatedPrice()}} </h1>
@@ -26,16 +26,16 @@
               </v-btn>
             </div>
           </div>
-          <div v-if="!planId">
+          <div v-show="!planId">
             <div class="my-10">
               <h1 class="font-sans">Doação não encontrada</h1>
             </div>
           </div>
         </v-card>
-        <v-alert type="error" v-if="status && status === 'error'">{{this.error}}</v-alert>
+        <v-alert type="error" v-show="status && status === 'error'">{{this.error}}</v-alert>
       </div>
 
-      <div v-if="status && status === 'ok'">
+      <div v-show="status && status === 'ok'">
         <v-card class="py-5 px-5 sm" elevation="2">
           <v-img
             contain
@@ -54,7 +54,7 @@
       </div>
 
     </div>
-    <div v-if="loading">
+    <div v-show="loading">
       <v-progress-circular
       :size="80"
       color="#FFFFFF"

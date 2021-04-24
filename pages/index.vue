@@ -36,7 +36,7 @@
       </div>
 
       <div v-show="status && status === 'ok'">
-        <v-card class="py-5 px-5 sm" elevation="2">
+        <v-card class="py-5 px-5 sm" min-width="500" elevation="2">
           <v-img
             contain
             aspect-ratio="2"
@@ -68,12 +68,8 @@
       dark
       padless
       fixed
+      class="justify-center"
     >
-      <v-card
-        class="flex w-max"
-        flat
-        tile
-      >
       <p class="white--text text-center p-0.5 text-sm">
         {{ new Date().getFullYear() }} — Alexandre Cabral 
         <v-btn icon href="https://github.com/o-mago" target="_blank">
@@ -82,7 +78,6 @@
           </v-icon> 
         </v-btn>
       </p>
-    </v-card>
   </v-footer>
   </div>
 </template>
@@ -122,9 +117,12 @@ export default {
   },
   methods: {
     getFormatedPrice() {
-      let stringAmount = ""+this.plan.amount
-      let formatedPrice = stringAmount.slice(-stringAmount.length-1,-2)+","+stringAmount.substring(stringAmount.length - 2)
-      return formatedPrice
+      if(this.plan) {
+        let stringAmount = ""+this.plan.amount
+        let formatedPrice = stringAmount.slice(-stringAmount.length-1,-2)+","+stringAmount.substring(stringAmount.length - 2)
+        return formatedPrice
+      }
+      return ""
     },
     callCheckout() {
       let self = this

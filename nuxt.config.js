@@ -1,6 +1,9 @@
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
+  router: {
+    base: '/ecommerce-esf/'
+  },
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {

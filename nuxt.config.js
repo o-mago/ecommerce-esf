@@ -47,5 +47,6 @@ export default {
   modules: [
   ],
   build: {
+    ssr: false
   }
 }

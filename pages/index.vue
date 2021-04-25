@@ -1,99 +1,59 @@
 <template>
   <div>
-  <div class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500">
-    <div v-show="!loading">
-
-      <div v-show="!status || status !== 'ok'">
-        <v-card class="py-5 px-5" min-width="500" elevation="2">
-          <v-img
-            contain
-            aspect-ratio="2"
-            :src="require('@/assets/images/logo-esf.png')"
-          ></v-img>
-          <div v-show="planId">
-            <div class="my-10">
-              <h1 class="font-sans">Doação mensal no valor de</h1>
-              <h1 class="font-sans text-green-600"> R$ {{getFormatedPrice()}} </h1>
-            </div>
-            <div>
-              <v-btn
-                class="ma-2"
-                outlined
-                color="#2aa879"
-                @click="callCheckout()"
-              >
-                Preencher dados
-              </v-btn>
-            </div>
-          </div>
-          <div v-show="!planId">
-            <div class="my-10">
-              <h1 class="font-sans">Doação não encontrada</h1>
-            </div>
-          </div>
-        </v-card>
-        <v-alert type="error" v-show="status && status === 'error'">{{this.error}}</v-alert>
-      </div>
-
-      <div v-show="status && status === 'ok'">
-        <v-card class="py-5 px-5 sm" min-width="500" elevation="2">
-          <v-img
-            contain
-            aspect-ratio="2"
-            :src="require('@/assets/images/logo-esf.png')"
-          ></v-img>
-          <div class="my-10">
-            <h1 class="font-sans">Doação cadastrada com sucesso</h1>
-            <h1 class="font-sans">Em caso de dúvidas contate:</h1>
-            <h1 class="font-sans text-green-600"> comunicacao.jf@esf-brasil.org  </h1>
-          </div>
-        </v-card>
-        <v-alert
-          type="success"
-        >Doação confirmada</v-alert>
-      </div>
-
-    </div>
-    <div v-show="loading">
-      <v-progress-circular
-      :size="80"
-      color="#FFFFFF"
-      indeterminate>
-      </v-progress-circular>
-    </div>
-
-    </div>
-
-    <v-footer
-      dark
-      padless
-      fixed
-      class="justify-center"
+    <div
+      class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500"
     >
+      <div v-show="!loading">
+        <div v-show="!status || status !== 'ok'" class="flex flex-wrap justify-center overflow-hidden">
+          <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 w-1/5 overflow-hidden"/>
+        </div>
+
+        <div v-show="status && status === 'error'">
+          <v-alert type="error">{{ this.error }}</v-alert>
+        </div>
+
+        <div v-show="status && status === 'ok'">
+          <finish-transaction />
+        </div>
+      </div>
+      <div v-show="loading">
+        <loader />
+      </div>
+    </div>
+
+    <div class="my-8">
+    </div>
+
+    <v-footer dark padless fixed class="justify-center">
       <p class="white--text text-center p-0.5 text-sm">
-        {{ new Date().getFullYear() }} — Alexandre Cabral 
+        {{ new Date().getFullYear() }} — Alexandre Cabral
         <v-btn icon href="https://github.com/o-mago" target="_blank">
-          <v-icon>
-            mdi-github
-          </v-icon> 
+          <v-icon> mdi-github </v-icon>
         </v-btn>
       </p>
-  </v-footer>
+    </v-footer>
   </div>
 </template>
 
 <script>
 import pagarme from "pagarme";
+import Card from "@/components/Card.vue";
+import FinishTransaction from "@/components/FinishTransaction.vue";
+import Loader from "@/components/Loader.vue";
 
 export default {
+  components: {
+    Card,
+    FinishTransaction,
+    Loader,
+  },
   data: () => ({
     client: null,
-    plan: null,
+    plans: null,
     paymentData: null,
     loading: true,
-    planId: undefined,
     status: null,
-    error: null
+    error: null,
   }),
   mounted() {
     let externalScript = document.createElement("script");
@@ -104,72 +64,28 @@ export default {
     document.head.appendChild(externalScript);
   },
   async created() {
-    this.planId = parseInt(this.$route?.query?.plan)
-    if(this.planId) {
-      this.client = await pagarme.client.connect({
-        api_key: process.env.apiKey,
-      });
-      this.plan = await this.client.plans.find({
-        id: this.planId
-      })
-    }
-    this.loading = false
+    this.client = await pagarme.client.connect({
+      api_key: process.env.apiKey,
+    });
+    this.plans = await this.client.plans.all();
+    this.plans = this.plans.filter((elem) => elem.name != "OFF")
+    this.plans.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
+    this.loading = false;
   },
   methods: {
-    getFormatedPrice() {
-      if(this.plan) {
-        let stringAmount = ""+this.plan.amount
-        let formatedPrice = stringAmount.slice(-stringAmount.length-1,-2)+","+stringAmount.substring(stringAmount.length - 2)
-        return formatedPrice
-      }
-      return ""
-    },
-    callCheckout() {
-      let self = this
-      let checkout = new PagarMeCheckout.Checkout({
-        encryption_key: process.env.encryptionKey,
-        success: function (data) {
-          self.createRecurrence(data);
-        },
-        error: function (err) {
-          console.log(err);
-        },
-        close: function () {
-          console.log("The modal has been closed.");
-        },
-      });
-
-      checkout.open({
-        amount: this.plan.amount,
-        customerData: "true",
-        paymentMethods: "credit_card",
-        paymentButtonText: 'Doar',
-        createToken: "false",
-        uiColor: '#2aa879',
-        headerText: "Valor da doação mensal",
-        items: [
-          {
-            id: "1",
-            title: "Doação",
-            unit_price: this.plan.amount,
-            quantity: 1,
-            tangible: "false",
-          },
-        ],
-      });
-    },
-    async createRecurrence(data) {
+    async createRecurrence(data, planId) {
       try {
         let res = await this.client.subscriptions.create({
-          plan_id: this.plan.id,
-          ...data
+          plan_id: planId,
+          ...data,
         });
-        console.log(res)
-        this.status = "ok"
-      } catch(err) {
-        console.log(err?.response?.errors[0].message)
-        this.error = err?.response?.errors[0].message
-        this.status = "error"
+        this.status = "ok";
+        if(res?.currentTransaction?.boleto_url) {
+          window.open(res.currentTransaction.boleto_url, "_blank")
+        }
+      } catch (err) {
+        this.error = err?.response?.errors[0].message;
+        this.status = "error";
       }
     },
   },

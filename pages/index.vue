@@ -32,7 +32,7 @@
       <p class="white--text text-center p-1 text-m">
         Dúvidas? financeiro.jf@esf-brasil.org
       </p>
-      <p class="white--text text-right text-xs absolute right-0">
+      <p class="white--text text-right text-xs absolute right-0 hidden md:block">
         Desenvolvido por Alexandre Cabral
         <v-btn icon small href="https://github.com/o-mago" target="_blank">
           <v-icon> mdi-github </v-icon>

@@ -4,8 +4,12 @@
       class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500"
     >
       <div v-show="!loading">
-        <div v-show="!status || status !== 'ok'" class="flex flex-wrap justify-center overflow-hidden">
+        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="flex flex-wrap justify-center overflow-hidden">
           <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 w-1/5 overflow-hidden"/>
+        </div>
+
+        <div v-show="!plans || (plans && plans.length === 0)">
+          <empty-state />
         </div>
 
         <div v-show="status && status === 'error'">
@@ -42,6 +46,7 @@
 import pagarme from "pagarme";
 import Card from "@/components/Card.vue";
 import FinishTransaction from "@/components/FinishTransaction.vue";
+import EmptyState from "@/components/EmptyState.vue";
 import Loader from "@/components/Loader.vue";
 
 export default {
@@ -49,6 +54,7 @@ export default {
     Card,
     FinishTransaction,
     Loader,
+    EmptyState
   },
   data: () => ({
     client: null,

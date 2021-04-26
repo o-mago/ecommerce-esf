@@ -7,21 +7,31 @@
     ></v-img>
     <div class="my-10">
       <h1 class="font-sans">Doação mensal no valor de</h1>
-      <h1 class="font-sans text-green-600"> R$ {{getFormatedPrice()}} </h1>
+      <h1 class="font-sans text-green-600">R$ {{ getFormatedPrice() }}</h1>
     </div>
     <div>
-      <v-btn
-        class="ma-2"
-        outlined
-        color="#2aa879"
-        @click="callCheckout()"
-      >
+      <v-btn class="ma-2" outlined color="#2aa879" @click="callCheckout()">
         Preencher dados
       </v-btn>
     </div>
     <div class="mt-2 text-xs">
       <p>Formas de pagamento:</p>
-      <v-icon v-for="method in plan.payment_methods" :key="method" color="green"> {{ getPaymentIcon(method) }} </v-icon>
+      <v-row justify="center">
+        <v-img
+          class="mt-6 mx-2"
+          v-if="plan.payment_methods.includes('credit_card')"
+          contain
+          max-width="40"
+          :src="require('@/assets/images/credit-card.svg')"
+        ></v-img>
+        <v-img
+          class="mt-6 mx-2"
+          v-if="plan.payment_methods.includes('boleto')"
+          contain
+          max-width="40"
+          :src="require('@/assets/images/boleto.svg')"
+        ></v-img>
+      </v-row>
     </div>
   </v-card>
 </template>
@@ -36,31 +46,34 @@ export default {
   props: {
     plan: {
       type: Object,
-      default: () => {}
+      default: () => {},
     },
     callback: {
       type: Function,
-      default: () => () => {}
-    }
+      default: () => () => {},
+    },
   },
   methods: {
     getFormatedPrice() {
-      if(this.plan) {
-        let stringAmount = ""+this.plan.amount
-        let formatedPrice = stringAmount.slice(-stringAmount.length-1,-2)+","+stringAmount.substring(stringAmount.length - 2)
-        return formatedPrice
+      if (this.plan) {
+        let stringAmount = "" + this.plan.amount;
+        let formatedPrice =
+          stringAmount.slice(-stringAmount.length - 1, -2) +
+          "," +
+          stringAmount.substring(stringAmount.length - 2);
+        return formatedPrice;
       }
-      return ""
+      return "";
     },
     getPaymentIcon(method) {
       const paymentMap = {
-        credit_card: "mdi-credit-card-outline",
-        boleto: "mdi-receipt"
-      }
-      return paymentMap[method]
+        credit_card: "../assets/images/credit-card.svg",
+        boleto: "../assets/images/boleto.svg",
+      };
+      return paymentMap[method];
     },
     callCheckout() {
-      let self = this
+      let self = this;
       let checkout = new PagarMeCheckout.Checkout({
         encryption_key: process.env.encryptionKey,
         success: function (data) {
@@ -69,34 +82,33 @@ export default {
         error: function (err) {
           console.log(err);
         },
-        close: function () {
-        },
+        close: function () {},
       });
 
       let expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 2); 
+      expirationDate.setDate(expirationDate.getDate() + 2);
 
       let dd = expirationDate.getDate();
       let mm = expirationDate.getMonth() + 1;
       let yyyy = expirationDate.getFullYear();
 
-      let expirationFormattedDate = dd + '/'+ mm + '/'+ yyyy;
+      let expirationFormattedDate = dd + "/" + mm + "/" + yyyy;
 
       let methods = this.plan.payment_methods.reduce((acc, elem) => {
-        if (acc !== "") elem = ","+elem
-        acc+=elem
-        return acc
-      }, "")
+        if (acc !== "") elem = "," + elem;
+        acc += elem;
+        return acc;
+      }, "");
 
       checkout.open({
         amount: this.plan.amount,
         customerData: "true",
         paymentMethods: methods,
-        paymentButtonText: 'Doar',
+        paymentButtonText: "Doar",
         createToken: "false",
         boletoExpirationDate: expirationFormattedDate,
         pixExpirationDate: expirationFormattedDate,
-        uiColor: '#2aa879',
+        uiColor: "#2aa879",
         headerText: "Valor da doação: {price_info}",
         items: [
           {
@@ -108,7 +120,7 @@ export default {
           },
         ],
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -4,7 +4,7 @@
       class="min-h-screen min-w-full flex justify-center items-center text-center mx-auto bg-green-500"
     >
       <div v-show="!loading" class="max-w-full">
-        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="sm:mx-5 md:mx-20 flex flex-wrap justify-center">
+        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="sm:mx-5 md:mx-10 flex flex-wrap justify-center">
           <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 flex-grow-0 overflow-hidden"/>
         </div>
 

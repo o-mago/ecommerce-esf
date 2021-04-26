@@ -2,7 +2,7 @@ export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
   router: {
-    base: '/ecommerce-esf/'
+    base: '/'
   },
   generate: {
     fallback: 'index.html'

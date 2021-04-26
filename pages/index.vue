@@ -79,7 +79,6 @@ export default {
     this.plans = await this.client.plans.all();
     this.plans = this.plans.filter((elem) => elem.name != "OFF")
     this.plans.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
-    this.plans = []
     this.loading = false;
   },
   methods: {

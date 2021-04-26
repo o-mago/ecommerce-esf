@@ -1,5 +1,5 @@
 <template>
-  <v-card class="py-5 px-5" min-width="300" elevation="2">
+  <v-card class="flex py-5 px-5" elevation="2">
     <v-img
       contain
       aspect-ratio="2"

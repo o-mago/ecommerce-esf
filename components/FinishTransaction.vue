@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-card class="py-5 px-5 sm" min-width="500" elevation="2">
+    <v-card class="py-5 px-5" elevation="2">
       <v-img
         contain
         aspect-ratio="2"

@@ -1,3 +1,6 @@
+let env = process.env.ENV || 'dev';
+import { Envs } from './envs.js';
+
 export default {
   // Target: https://go.nuxtjs.dev/config-target
   target: 'static',
@@ -32,8 +35,8 @@ export default {
     }
   },
   env: {
-    apiKey: process.env.API_KEY,
-    encryptionKey: process.env.ENCRYPTION_KEY,
+    apiKey: Envs[env].API_KEY,
+    encryptionKey: Envs[env].ENCRYPTION_KEY,
   },
   css: [
   ],

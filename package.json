@@ -3,12 +3,15 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
-    "build": "nuxt build",
-    "start": "nuxt start",
-    "generate": "nuxt generate",
+    "dev": "ENV=dev nuxt",
+    "build:dev": "ENV=dev nuxt build",
+    "build:prod": "ENV=prod nuxt build",
+    "start": "ENV=dev nuxt start",
+    "generate:dev": "ENV=dev nuxt generate",
+    "generate:prod": "ENV=prod nuxt generate",
     "test": "jest",
-    "deploy": "push-dir --dir=dist --branch=gh-pages --cleanup"
+    "deploy:dev": "chmod +x deploy-dev.sh && ./deploy-dev.sh && push-dir --dir=dist --branch=gh-pages --cleanup",
+    "deploy:prod": "chmod +x deploy-prod.sh && ./deploy-prod.sh"
   },
   "dependencies": {
     "core-js": "^3.9.1",

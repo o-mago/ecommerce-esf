@@ -1,10 +1,10 @@
 <template>
   <div>
     <div
-      class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500"
+      class="min-h-screen min-w-full flex justify-center items-center text-center mx-auto bg-green-500"
     >
-      <div v-show="!loading">
-        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="mx-20 flex flex-wrap justify-center">
+      <div v-show="!loading" class="max-w-full">
+        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="sm:mx-5 md:mx-20 flex flex-wrap justify-center">
           <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 flex-grow-0 overflow-hidden"/>
         </div>
 
@@ -28,8 +28,8 @@
     <div class="my-8">
     </div>
 
-    <v-footer dark padless fixed class="justify-center">
-      <p class="white--text text-center p-1 text-m">
+    <v-footer dark padless fixed max-width="100vw" class="justify-center overflow-hidden">
+      <p class="white--text text-center py-1 text-m">
         Dúvidas? financeiro.jf@esf-brasil.org
       </p>
       <p class="white--text text-right text-xs absolute right-0 hidden md:block">

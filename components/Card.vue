@@ -112,7 +112,7 @@ export default {
         headerText: "Valor da doação: {price_info}",
         items: [
           {
-            id: "1",
+            id: ""+this.plan.id,
             title: "Doação",
             unit_price: this.plan.amount,
             quantity: 1,

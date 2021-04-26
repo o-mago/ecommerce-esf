@@ -4,8 +4,8 @@
       class="min-h-screen flex justify-center items-center text-center mx-auto bg-green-500"
     >
       <div v-show="!loading">
-        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-4">
-          <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 overflow-hidden"/>
+        <div v-show="(!status || status !== 'ok') && (plans && plans.length > 0)" class="mx-20 flex flex-wrap justify-center">
+          <card v-for="plan in plans" :key="plan.id" :plan="plan" :callback="createRecurrence" class="mx-4 my-4 px-8 flex-grow-0 overflow-hidden"/>
         </div>
 
         <div v-show="!plans || (plans && plans.length === 0)" class="lg:w-500">
@@ -77,7 +77,7 @@ export default {
       api_key: process.env.apiKey,
     });
     this.plans = await this.client.plans.all();
-    this.plans = this.plans.filter((elem) => elem.name != "OFF")
+    this.plans = this.plans.filter((elem) => elem.name !== "OFF")
     this.plans.sort((a, b) => parseFloat(a.amount) - parseFloat(b.amount))
     this.loading = false;
   },

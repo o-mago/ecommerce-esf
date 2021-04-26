@@ -1,5 +1,5 @@
 <template>
-  <v-card class="flex py-5 px-5" elevation="2">
+  <v-card class="py-5 px-5" elevation="2">
     <v-img
       contain
       aspect-ratio="2"
@@ -7,7 +7,7 @@
     ></v-img>
     <div class="my-10">
       <h1 class="font-sans">Doação mensal no valor de</h1>
-      <h1 class="font-sans text-green-600">R$ {{ getFormatedPrice() }}</h1>
+      <h1 class="font-sans text-green-600">{{ getFormatedPrice() }}</h1>
     </div>
     <div>
       <v-btn class="ma-2" outlined color="#2aa879" @click="callCheckout()">
@@ -57,10 +57,16 @@ export default {
     getFormatedPrice() {
       if (this.plan) {
         let stringAmount = "" + this.plan.amount;
-        let formatedPrice =
-          stringAmount.slice(-stringAmount.length - 1, -2) +
-          "," +
-          stringAmount.substring(stringAmount.length - 2);
+        let unity = stringAmount.slice(-stringAmount.length - 1, -2)
+        unity = unity ? unity : 0
+        let decimal = stringAmount.substring(stringAmount.length - 2)
+        let floatPrice = parseFloat(unity + "." + decimal)
+        var formatter = new Intl.NumberFormat('pt-BR', {
+          style: 'currency',
+          currency: 'BRL',
+        });
+
+        let formatedPrice = formatter.format(floatPrice);
         return formatedPrice;
       }
       return "";

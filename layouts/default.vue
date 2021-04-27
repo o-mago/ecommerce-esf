@@ -1,20 +1,36 @@
 <template>
-  <div>
+  <div
+    class="min-h-screen min-w-full flex justify-center items-center text-center mx-auto bg-green-500"
+  >
     <Nuxt />
+    <div class="my-8"></div>
+
+    <v-footer
+      dark
+      padless
+      fixed
+      max-width="100vw"
+      class="justify-center overflow-hidden"
+    >
+      <p class="white--text text-center py-1 text-m">
+        Dúvidas? financeiro.jf@esf-brasil.org
+      </p>
+      <p
+        class="white--text text-right text-xs absolute right-0 hidden md:block"
+      >
+        Desenvolvido por Alexandre Cabral
+        <v-btn icon small href="https://github.com/o-mago" target="_blank">
+          <v-icon> mdi-github </v-icon>
+        </v-btn>
+      </p>
+    </v-footer>
   </div>
 </template>
 
 <style>
 html {
-  font-family:
-    'Source Sans Pro',
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    'Helvetica Neue',
-    Arial,
-    sans-serif;
+  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", Arial, sans-serif;
   font-size: 16px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;

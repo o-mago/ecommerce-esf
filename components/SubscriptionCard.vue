@@ -10,7 +10,7 @@
       <h1 class="font-sans text-green-600">{{ getFormatedPrice() }}</h1>
     </div>
     <div>
-      <v-btn class="ma-2" outlined color="#2aa879" @click="callCheckout()">
+      <v-btn class="my-2" outlined color="#2aa879" @click="callCheckout()">
         Preencher dados
       </v-btn>
     </div>
@@ -61,7 +61,7 @@ export default {
         unity = unity ? unity : 0
         let decimal = stringAmount.substring(stringAmount.length - 2)
         let floatPrice = parseFloat(unity + "." + decimal)
-        var formatter = new Intl.NumberFormat('pt-BR', {
+        let formatter = new Intl.NumberFormat('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         });
@@ -83,10 +83,10 @@ export default {
       let checkout = new PagarMeCheckout.Checkout({
         encryption_key: process.env.encryptionKey,
         success: function (data) {
-          self.callback(data, self.plan.id);
+          self.callback(data, self.plan.id, null);
         },
         error: function (err) {
-          console.log(err);
+          self.callback(null, null, err);
         },
         close: function () {},
       });
@@ -98,7 +98,7 @@ export default {
       let mm = expirationDate.getMonth() + 1;
       let yyyy = expirationDate.getFullYear();
 
-      let expirationFormattedDate = dd + "/" + mm + "/" + yyyy;
+      let expirationFormattedDateBoleto = dd + "/" + mm + "/" + yyyy;
 
       let methods = this.plan.payment_methods.reduce((acc, elem) => {
         if (acc !== "") elem = "," + elem;
@@ -112,8 +112,7 @@ export default {
         paymentMethods: methods,
         paymentButtonText: "Doar",
         createToken: "false",
-        boletoExpirationDate: expirationFormattedDate,
-        pixExpirationDate: expirationFormattedDate,
+        boletoExpirationDate: expirationFormattedDateBoleto,
         uiColor: "#2aa879",
         headerText: "Valor da doação: {price_info}",
         items: [

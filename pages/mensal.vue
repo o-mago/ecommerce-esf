@@ -23,7 +23,7 @@
       </div>
 
       <div v-show="status && status === 'ok'" class="lg:w-500">
-        <finish-transaction />
+        <finish-transaction :boleto_url="boleto_url" />
       </div>
     </div>
     <div v-show="loading">
@@ -53,6 +53,7 @@ export default {
     loading: true,
     status: null,
     error: null,
+    boleto_url: ""
   }),
   mounted() {
     let externalScript = document.createElement("script");
@@ -85,6 +86,7 @@ export default {
         });
         this.status = "ok";
         if (res?.currentTransaction?.boleto_url) {
+          this.boleto_url = res.currentTransaction.boleto_url
           window.open(res.currentTransaction.boleto_url, "_blank");
         }
       } catch (err) {

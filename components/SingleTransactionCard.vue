@@ -95,24 +95,12 @@ export default {
         close: function () {},
       });
 
-      let expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 2);
-
-      let dd = expirationDate.getDate();
-      let mm = expirationDate.getMonth() + 1;
-      let yyyy = expirationDate.getFullYear();
-
-      let expirationFormattedDateBoleto = dd + "/" + mm + "/" + yyyy;
-      let expirationFormattedDatePix = yyyy + "-" + mm + "-" + dd;
-
       checkout.open({
         amount: this.rawPrice,
         customerData: "true",
         paymentMethods: "credit_card,boleto",
         paymentButtonText: "Doar",
         createToken: "false",
-        boletoExpirationDate: expirationFormattedDateBoleto,
-        pixExpirationDate: expirationFormattedDatePix,
         uiColor: "#2aa879",
         headerText: "Valor da doação: {price_info}",
         items: [

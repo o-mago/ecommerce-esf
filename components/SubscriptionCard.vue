@@ -91,15 +91,6 @@ export default {
         close: function () {},
       });
 
-      let expirationDate = new Date();
-      expirationDate.setDate(expirationDate.getDate() + 2);
-
-      let dd = expirationDate.getDate();
-      let mm = expirationDate.getMonth() + 1;
-      let yyyy = expirationDate.getFullYear();
-
-      let expirationFormattedDateBoleto = dd + "/" + mm + "/" + yyyy;
-
       let methods = this.plan.payment_methods.reduce((acc, elem) => {
         if (acc !== "") elem = "," + elem;
         acc += elem;
@@ -112,7 +103,6 @@ export default {
         paymentMethods: methods,
         paymentButtonText: "Doar",
         createToken: "false",
-        boletoExpirationDate: expirationFormattedDateBoleto,
         uiColor: "#2aa879",
         headerText: "Valor da doação: {price_info}",
         items: [

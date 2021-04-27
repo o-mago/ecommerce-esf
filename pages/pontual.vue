@@ -106,8 +106,8 @@ export default {
           this.status = "error";
         } else {
           this.status = "ok";
-          if (res?.currentTransaction?.boleto_url) {
-            window.open(res.currentTransaction.boleto_url, "_blank");
+          if (res?.boleto_url) {
+            window.open(res.boleto_url, "_blank");
           }
         }
       } catch (err) {

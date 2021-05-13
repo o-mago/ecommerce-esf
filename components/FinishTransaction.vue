@@ -22,7 +22,8 @@
         <h1 class="font-sans text-green-600">financeiro.jf@esf-brasil.org</h1>
       </div>
     </v-card>
-    <v-alert type="success">Doação confirmada</v-alert>
+    <v-alert v-if="boleto_url ===''" type="success">Doação confirmada</v-alert>
+    <v-alert v-if="boleto_url !==''" type="success">A doação será confirmada após o pagamento</v-alert>
   </div>
 </template>
 

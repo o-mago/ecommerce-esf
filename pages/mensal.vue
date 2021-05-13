@@ -85,9 +85,9 @@ export default {
           ...data,
         });
         this.status = "ok";
-        if (res?.currentTransaction?.boleto_url) {
-          this.boleto_url = res.currentTransaction.boleto_url
-          window.open(res.currentTransaction.boleto_url, "_blank");
+        if (res?.current_transaction?.boleto_url) {
+          this.boleto_url = res.current_transaction.boleto_url
+          window.open(res.current_transaction.boleto_url, "_blank");
         }
       } catch (err) {
         this.error = err?.response?.errors[0].message;

@@ -61,6 +61,13 @@ export default {
   },
   methods: {
     async endTransaction(data, amount, error) {
+      let expirationDate = new Date();
+      expirationDate.setDate(expirationDate.getDate() + 5);
+      let dd = expirationDate.getDate();
+      let mm = expirationDate.getMonth() + 1;
+      let yyyy = expirationDate.getFullYear();
+      let expirationFormattedDate = dd + "/" + mm + "/" + yyyy;
+
       data.customer["external_id"] = ""+this.generateHash()
       data.customer["country"] = "br"
       let documentType = null
@@ -80,6 +87,7 @@ export default {
       data.billing["address"] = data.customer.address
       data.billing["name"] = data.customer.name
       data.billing.address["country"] = "br"
+      data.boleto_expiration_date = expirationDate
       delete data.customer.address
       delete data.customer.document_number
       delete data.customer.phone
